@@ -1,0 +1,12 @@
+LIVER TUMOR SEGMENTATION — CONVNEXT-TINY U-NET — TEST SET RESULTS
+============================================================
+
+dice_coefficient (primary overlap metric) : 0.8888
+iou_jaccard                               : 0.7998
+precision                                 : 0.882
+recall / sensitivity                      : 0.896
+accuracy                                  : 0.9799
+
+--- for reference, not independent evidence ---
+f1_score (== dice_coefficient, same TP/FP/FN) : 0.8888
+

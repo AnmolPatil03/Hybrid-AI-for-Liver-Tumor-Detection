@@ -1,0 +1,22 @@
+{
+  "feature_columns_transformed": [
+    "numeric__AFP_ng_mL",
+    "numeric__AFP_L3_percent",
+    "numeric__DCP_mAU_mL",
+    "numeric__Albumin_g_dL",
+    "numeric__Bilirubin_mg_dL",
+    "numeric__Platelet_count_x10e9_L",
+    "numeric__Age",
+    "binary__HCV_status",
+    "binary__HBV_status",
+    "binary__Cirrhosis_status",
+    "categorical__Sex_M"
+  ],
+  "best_params": {
+    "learning_rate": 0.05,
+    "max_depth": 6,
+    "n_estimators": 200
+  },
+  "n_estimators": 200,
+  "seed": 42
+}

@@ -1,0 +1,36 @@
+# Python
+.venv/
+venv/
+env/
+.env
+__pycache__/
+*.pyc
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Model weights (too large for git; publish via GitHub Releases)
+*.pt
+*.pth
+*.h5
+*.ckpt
+
+# Datasets
+backend/data/
+
+# Node / frontend
+node_modules/
+frontend/dist/
+*.local
+
+# Archives
+*.zip
+
+# Logs
+logs/
+*.log
+
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

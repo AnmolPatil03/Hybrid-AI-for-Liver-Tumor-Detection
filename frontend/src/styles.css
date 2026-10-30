@@ -1,0 +1,530 @@
+/* ===== Landing Page Styles (animated 3D hero + sections) ===== */
+
+html {
+    scroll-behavior: smooth;
+    /* Keep anchor targets clear of the fixed top nav */
+    scroll-padding-top: 92px;
+}
+
+/* ===== Top Navigation Bar ===== */
+.landing-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px clamp(20px, 6vw, 80px);
+    border-bottom: 1px solid transparent;
+    transition: background 0.3s ease, border-color 0.3s ease,
+        box-shadow 0.3s ease, padding 0.3s ease;
+}
+
+/* Solidify once the user scrolls off the top of the hero */
+.landing-nav.scrolled {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    background: rgba(5, 6, 10, 0.72);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+}
+
+/* --- Brand --- */
+.nav-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+}
+
+.nav-logo {
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.22), rgba(168, 85, 247, 0.22));
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    box-shadow: inset 0 0 18px rgba(59, 130, 246, 0.18);
+}
+
+.nav-logo svg {
+    width: 22px;
+    height: 22px;
+}
+
+.nav-brand-text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    line-height: 1.05;
+}
+
+.nav-brand-name {
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    color: #f3f4f6;
+}
+
+.nav-brand-name span {
+    background: linear-gradient(135deg, #60a5fa, #22d3ee);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.nav-brand-sub {
+    font-size: 9.5px;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #64748b;
+    margin-top: 4px;
+}
+
+/* --- Right group (links + CTA) --- */
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: clamp(16px, 3vw, 32px);
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.nav-link {
+    padding: 8px 16px;
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #cbd5e1;
+    text-decoration: none;
+    transition: color 0.2s ease, background 0.2s ease;
+}
+
+.nav-link:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.06);
+}
+
+/* --- CTA pill --- */
+.nav-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 22px;
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #ffffff;
+    cursor: pointer;
+    border: 1px solid rgba(96, 165, 250, 0.45);
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.92), rgba(99, 102, 241, 0.92));
+    box-shadow: 0 8px 24px rgba(59, 130, 246, 0.30);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+}
+
+.nav-cta:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.08);
+    box-shadow: 0 12px 30px rgba(59, 130, 246, 0.45);
+}
+
+.nav-cta svg {
+    width: 16px;
+    height: 16px;
+    transition: transform 0.2s ease;
+}
+
+.nav-cta:hover svg {
+    transform: translateX(3px);
+}
+
+/* --- Responsive --- */
+@media (max-width: 760px) {
+    .nav-links {
+        display: none;
+    }
+
+    .nav-brand-sub {
+        display: none;
+    }
+
+    .nav-cta {
+        padding: 9px 16px;
+    }
+}
+
+/* Fixed full-viewport 3D canvas — sits behind ALL landing content so the
+   page never goes blank while scrolling. */
+#liver-canvas {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* Landing wrapper: layered dark gradient backdrop */
+.landing-bg {
+    position: relative;
+    min-height: 100vh;
+    color: #e5e7eb;
+    background:
+        radial-gradient(1200px 800px at 78% 12%, rgba(59, 130, 246, 0.12), transparent 60%),
+        radial-gradient(1000px 760px at 12% 82%, rgba(168, 85, 247, 0.10), transparent 60%),
+        #05060a;
+}
+
+/* Every section renders above the fixed canvas */
+.landing-content {
+    position: relative;
+    z-index: 1;
+}
+
+/* --- Hero --- */
+#hero-section {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 0 clamp(24px, 8vw, 120px);
+    overflow: hidden;
+}
+
+.hero-body-image {
+    position: absolute;
+    top: 13vh;
+    right: 6%;
+    max-height: 82vh;
+    width: auto;
+    z-index: 0;
+    pointer-events: none;
+    object-fit: contain;
+    /* The source PNG has a solid black background. It lives OUTSIDE
+       .landing-content (which isolates blending) so this screen blend can
+       reach the dark scene behind it and erase the black rectangle, leaving
+       only the glowing anatomy. */
+    mix-blend-mode: screen;
+    -webkit-mask-image: radial-gradient(ellipse 74% 82% at center, black 48%, transparent 100%);
+    mask-image: radial-gradient(ellipse 74% 82% at center, black 48%, transparent 100%);
+    filter: drop-shadow(0 0 70px rgba(59, 130, 246, 0.22));
+}
+
+.hero-overlay {
+    position: relative;
+    z-index: 2;
+    text-align: left;
+    max-width: 620px;
+}
+
+.hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 20px;
+    background: rgba(22, 25, 34, 0.55);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    border-radius: 999px;
+    margin-bottom: 28px;
+    backdrop-filter: blur(8px);
+}
+
+.hero-badge .pulse-dot {
+    width: 8px;
+    height: 8px;
+    background: #34d399;
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(52, 211, 153, 0.8);
+    animation: pulse 2s infinite;
+}
+
+.hero-badge span:last-child {
+    font-size: 12px;
+    color: #cbd5e1;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+}
+
+.hero-title {
+    font-size: clamp(2.8rem, 6vw, 5rem);
+    font-weight: 800;
+    line-height: 1.08;
+    margin: 0 0 20px;
+    letter-spacing: -0.02em;
+    background: linear-gradient(135deg, #60a5fa, #a855f7, #22d3ee);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradient 8s ease infinite;
+}
+
+.hero-subtitle {
+    font-size: clamp(1rem, 2vw, 1.2rem);
+    color: #9ca3af;
+    max-width: 540px;
+    margin: 0 0 36px 0;
+    line-height: 1.65;
+}
+
+.scroll-indicator {
+    position: absolute;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    color: #6b7280;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    animation: bounce-slow 2.5s ease-in-out infinite;
+}
+
+.scroll-indicator svg {
+    width: 20px;
+    height: 20px;
+    stroke: #6b7280;
+}
+
+/* --- Landing CTA Button --- */
+.landing-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 30px;
+    border: none;
+    border-radius: 999px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 600;
+    color: #fff;
+    background: linear-gradient(135deg, #3b82f6, #6366f1);
+    box-shadow: 0 12px 34px rgba(59, 130, 246, 0.38);
+    transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease;
+}
+
+.landing-cta:hover {
+    transform: translateY(-2px) scale(1.02);
+    filter: brightness(1.08);
+    box-shadow: 0 18px 44px rgba(59, 130, 246, 0.5);
+}
+
+.landing-cta svg {
+    width: 18px;
+    height: 18px;
+    transition: transform 0.25s ease;
+}
+
+.landing-cta:hover svg {
+    transform: translateX(4px);
+}
+
+/* --- Sections --- */
+.features-section {
+    padding: 90px 24px;
+    max-width: 1140px;
+    margin: 0 auto;
+}
+
+.section-label {
+    text-align: center;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: #60a5fa;
+    margin-bottom: 12px;
+}
+
+.section-heading {
+    text-align: center;
+    font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+    font-weight: 700;
+    color: #f3f4f6;
+    margin: 0 0 56px;
+    letter-spacing: -0.01em;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 26px;
+}
+
+.feature-card {
+    background: rgba(17, 20, 30, 0.7);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 20px;
+    padding: 34px 28px;
+    transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+}
+
+.feature-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(59, 130, 246, 0.3);
+    box-shadow: 0 22px 54px rgba(59, 130, 246, 0.12);
+}
+
+.feature-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.feature-card h3 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #f3f4f6;
+    margin: 0 0 10px;
+}
+
+.feature-card p {
+    font-size: 0.95rem;
+    color: #9ca3af;
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* --- How It Works --- */
+.steps-section {
+    padding: 70px 24px 90px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.steps-timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    position: relative;
+}
+
+.steps-timeline::before {
+    content: '';
+    position: absolute;
+    left: 28px;
+    top: 28px;
+    bottom: 28px;
+    width: 2px;
+    background: linear-gradient(180deg, #3b82f6, #a855f7, #06b6d4);
+    border-radius: 2px;
+}
+
+.step-item {
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+    padding: 20px 0;
+    position: relative;
+}
+
+.step-number {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    font-weight: 800;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.step-content h3 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #f3f4f6;
+    margin: 0 0 6px;
+}
+
+.step-content p {
+    font-size: 0.95rem;
+    color: #9ca3af;
+    margin: 0;
+    line-height: 1.55;
+}
+
+/* --- Divider --- */
+.section-divider {
+    width: 100%;
+    max-width: 200px;
+    height: 2px;
+    margin: 0 auto;
+    background: linear-gradient(90deg, transparent, #3b82f6, #a855f7, transparent);
+    border-radius: 2px;
+}
+
+/* --- Shared helpers --- */
+.gradient-text {
+    background: linear-gradient(135deg, #3b82f6, #8b5cf6, #06b6d4);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradient 8s ease infinite;
+}
+
+/* --- Keyframes --- */
+@keyframes gradient {
+
+    0%,
+    100% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.5;
+        transform: scale(0.85);
+    }
+}
+
+@keyframes bounce-slow {
+
+    0%,
+    100% {
+        transform: translateX(-50%) translateY(0);
+    }
+
+    50% {
+        transform: translateX(-50%) translateY(10px);
+    }
+}
